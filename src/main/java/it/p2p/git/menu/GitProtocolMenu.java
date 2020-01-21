@@ -89,12 +89,20 @@ public class GitProtocolMenu {
 						String nameDir = fileDir.getAbsolutePath();
 						terminal.printf("\n nameDir "+ nameDir);
 
-						for(int i=0; i<nFile; i++) {
+									for(int i=0; i<nFile; i++) {
 							ManageData manageData = new ManageData();
 							String date = manageData.getData();
+							terminal.printf("\n date "+ date);
+
 							String time = manageData.getOrario();
+							terminal.printf("\n time "+ time);
+
 							String nameFile = date+ "_" +time+ "_" +"File"+ "_" + i +".txt";
+							terminal.printf("\n nameFile "+ nameFile);
+
 							String nameFileDir = nameDir + "/" +  nameFile;
+							
+							terminal.printf("\n nameFileDir "+ nameFileDir);
 
 							File newFile = new File(nameFileDir);
 							newFile.createNewFile();
