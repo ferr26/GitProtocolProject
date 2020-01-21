@@ -1,6 +1,9 @@
 package it.p2p.git.menu;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.beryx.textio.TextIO;
@@ -13,6 +16,7 @@ import org.kohsuke.args4j.Option;
 import it.p2p.git.entity.Commit;
 import it.p2p.git.entity.Repository;
 import it.p2p.git.impl.GitProtocolImpl;
+import it.p2p.git.utils.ManageData;
 import it.p2p.git.utils.ManageFile;
 /**
  * docker build --no-cache -t test  .
@@ -23,11 +27,11 @@ import it.p2p.git.utils.ManageFile;
  */
 public class GitProtocolMenu {
 
-	@Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
-	private static String master;
+	//@Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
+	private static String master = "127.0.0.1";
 
-	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
-	private static int id; 
+	//@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
+	private static int id=0; 
 
 	private final static int MENU_GENERAFILE = 1; 
 	private final static int MENU_CREATEREPO = 2; 
@@ -81,8 +85,31 @@ public class GitProtocolMenu {
 						
 						File fileDir = ManageFile.createDirectory(id, repositoryDirectory);
 						terminal.printf("\n fileDir "+ fileDir);
+						List <String> listFile = new ArrayList<>();
+						String nameDir = fileDir.getAbsolutePath();
+						terminal.printf("\n nameDir "+ nameDir);
 
-						List<String> listFile = ManageFile.generateFile( fileDir, nFile);
+						for(int i=0; i<nFile; i++) {
+							ManageData manageData = new ManageData();
+							String date = manageData.getData();
+							String time = manageData.getOrario();
+							String nameFile = date+ "_" +time+ "_" +"File"+ "_" + i +".txt";
+							String nameFileDir = nameDir + "/" +  nameFile;
+
+							File newFile = new File(nameFileDir);
+							newFile.createNewFile();
+							terminal.printf("\n newFile "+ newFile);
+
+							FileWriter fw = new FileWriter(newFile);
+
+							listFile.add(nameFile);
+							BufferedWriter bw = new BufferedWriter(fw);
+
+							bw.write("This file was created by numeber "+(i+1)+" on " + date + time );
+							bw.flush();
+							bw.close();
+						}
+						//List<String> listFile = ManageFile.generateFile( fileDir, nFile);
 						for (String file : listFile) {
 							terminal.printf("\n -> "+file+" \n");
 						}
