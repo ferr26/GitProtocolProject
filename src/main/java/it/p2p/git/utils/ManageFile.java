@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ManageFile {
 	
-	private static String PREFIX = "app/";
+	private static String PREFIX = "";
 	
 	public static File createDirectory(int id, String nameDirectory) {
 		String nameDir = PREFIX + id + "/" + nameDirectory;
