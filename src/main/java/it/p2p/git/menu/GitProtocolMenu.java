@@ -3,8 +3,12 @@ package it.p2p.git.menu;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
@@ -45,8 +49,10 @@ public class GitProtocolMenu {
 	private final static int MENU_PULL       = 9; 
 	private final static int LOCAL_HISTORY   = 10; 
 	private final static int REMOTE_HISTORY  = 11; 
+	private final static int FILE_REPOSITORY = 12; 
 
-	private final static int MENU_EXIT  	 = 12; 
+
+	private final static int MENU_EXIT  	 = 13; 
 
 	public static void main(String[] args) throws Exception {
 
@@ -73,7 +79,7 @@ public class GitProtocolMenu {
 				printMenu(terminal);
 
 				int option = textIO.newIntInputReader()
-						.withMaxVal(12)
+						.withMaxVal(13)
 						.withMinVal(0)
 						.read("# Option");
 				switch (option) {
@@ -282,6 +288,24 @@ public class GitProtocolMenu {
 						//terminal.printf("\n -> Error Remote History \n");
 					}
 					break;
+				case FILE_REPOSITORY:
+					terminal.printf("\nFile in Repository\n");
+					repositoryName = textIO.newStringInputReader().read("Repository Name:");
+					Map<String,File> files = peer.showFileRepository(repositoryName);
+					if(files == null) {
+						terminal.printf("\n Repository Not Exists \n");
+						break;
+					}else {
+						files.forEach((nomefile,file) -> {
+							terminal.printf(""+nomefile + "\n");
+						});
+					}
+					if(files.isEmpty()) {
+						terminal.printf("\n No file Present \n");
+
+					}
+
+					break;
 				case MENU_EXIT:
 					
 					boolean exit = textIO.newBooleanInputReader().withDefaultValue(false).read("exit?");
@@ -323,6 +347,7 @@ public class GitProtocolMenu {
 		terminal.printf("\n* #  %s - PULL                                                  *", MENU_PULL);
 		terminal.printf("\n* #%s - SHOW LOCAL HISTORY                       *", LOCAL_HISTORY);
 		terminal.printf("\n* #%s - SHOW REMOTE HISTORY                    *", REMOTE_HISTORY);
+		terminal.printf("\n* #%s - SHOW FILE IN REPOSITORY                   *", FILE_REPOSITORY);
 		terminal.printf("\n* ------------------------------------------------------------------ *");
 		terminal.printf("\n* #%s - EXIT                                                   *", MENU_EXIT);
 		terminal.printf("\n********************************************\n");
