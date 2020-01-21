@@ -30,6 +30,7 @@ public class ManageFile {
 	public static List<String> generateFile(File fileDirectory, int nFile) throws IOException {
 		List <String> listFile = new ArrayList<>();
 		String nameDir = fileDirectory.getAbsolutePath();
+		System.out.println("namedir" + nameDir);
 		for(int i=0; i<nFile; i++) {
 			ManageData manageData = new ManageData();
 			String date = manageData.getData();
