@@ -214,7 +214,11 @@ public class GitProtocolImpl implements GitProtocolExtends {
 	public boolean commit(String _repo_name, String _message) {
 		Commit commit = new Commit(author, _message, fileCommit);
 		fileCommit = new ArrayList<>();
+		
 		String repoNameUpperCase = _repo_name.toUpperCase();
+		if(!existRepository(repoNameUpperCase)) {
+			return false;
+		}
 		if(localReposity.containsKey(repoNameUpperCase)) {
 			Repository repo = localReposity.get(repoNameUpperCase);
 			repo.getListCommit().add(commit);
@@ -248,11 +252,11 @@ public class GitProtocolImpl implements GitProtocolExtends {
 						listUp.add(commit);
 					}
 					if (!listUp.isEmpty()) {
-						return "Not possibile Push. Fare Pull ";
+						return "Not possibile Push, Make Pull";
 					}
 					
 					_dht.put(Number160.createHash(repoNameUpperCase)).data(new Data(localRepo)).start().awaitUninterruptibly();
-					return "Push Successfully ";
+					return "Push Successfully";
 				} else {
 					return "Remote repository Not Exists";
 				}
@@ -353,6 +357,27 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return repository;
 	}
+	public Map<String,File> showFileRepository(String _repo_name) {
+		Map<String,File> file = new HashMap<String, File>();;
+		String repoNameUpperCase = _repo_name.toUpperCase();
+
+		try {
+			
+			FutureGet futureGet = _dht.get(Number160.createHash(repoNameUpperCase)).start();
+			futureGet.awaitUninterruptibly();	
+			if(futureGet.isSuccess()) {
+				if(futureGet.isEmpty())
+					return null;
+				Repository rep = (Repository) futureGet.dataMap().values().iterator().next().object();
+				file = rep.getFiles();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return file;
+	}
+
+	
 	/**
 	 * Show if Repository on Network exists
 	 * @param _repo_name a String, the name of the repository.
