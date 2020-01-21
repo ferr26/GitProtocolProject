@@ -80,6 +80,8 @@ public class GitProtocolMenu {
 						int nFile = textIO.newIntInputReader().read("How many files do you want to generate?:");
 						
 						File fileDir = ManageFile.createDirectory(id, repositoryDirectory);
+						terminal.printf("\n fileDir "+ fileDir);
+
 						List<String> listFile = ManageFile.generateFile( fileDir, nFile);
 						for (String file : listFile) {
 							terminal.printf("\n -> "+file+" \n");
