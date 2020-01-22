@@ -31,7 +31,7 @@ import it.p2p.git.utils.ManageFile;
  */
 public class GitProtocolMenu {
 
-	@Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
+        @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
 	private static String master;
 
 	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
@@ -50,9 +50,9 @@ public class GitProtocolMenu {
 	private final static int LOCAL_HISTORY   = 10; 
 	private final static int REMOTE_HISTORY  = 11; 
 	private final static int FILE_REPOSITORY = 12; 
+	private final static int FILE_DIRECTORY   = 13;
 
-
-	private final static int MENU_EXIT  	 = 13; 
+	private final static int MENU_EXIT  	 = 14; 
 
 	public static void main(String[] args) throws Exception {
 
@@ -79,7 +79,7 @@ public class GitProtocolMenu {
 				printMenu(terminal);
 
 				int option = textIO.newIntInputReader()
-						.withMaxVal(13)
+						.withMaxVal(14)
 						.withMinVal(0)
 						.read("# Option");
 				switch (option) {
@@ -88,9 +88,9 @@ public class GitProtocolMenu {
 						terminal.printf("\nGenerate File \n");
 						repositoryDirectory = textIO.newStringInputReader().read("Enter name directory:");
 						int nFile = textIO.newIntInputReader().read("How many files do you want to generate?:");
-						
+
 						File fileDir = ManageFile.createDirectory(id, repositoryDirectory);
-								
+
 						List<String> listFile = ManageFile.generateFile( fileDir, nFile);
 						for (String file : listFile) {
 							terminal.printf("\n -> "+file+" \n");
@@ -138,7 +138,7 @@ public class GitProtocolMenu {
 					try {
 						terminal.printf("\nDelete Repository \n");
 						repositoryName = textIO.newStringInputReader().read("Repository Name:");
-					
+
 						if(peer.deleteRepository(repositoryName))
 							terminal.printf("\n Repository %s Successfully Deleted \n",repositoryName);
 						else
@@ -165,13 +165,13 @@ public class GitProtocolMenu {
 				case MENU_SHOWLOCAL:
 					try {
 						terminal.printf("\nLOCAL REPOSITORY \n");
-					
+
 						List<Repository> list = peer.showLocalRepository();
 						if (list.isEmpty()) {
 							terminal.printf("\n -> NOT PRESENT\n");
 							break;
 						}
-						
+
 						for (Repository rp: list){
 							terminal.printf("\n -> Name: %s\n",rp.getName());
 							terminal.printf("\n    Directory: %s\n",rp.getDirectory().getAbsolutePath());
@@ -223,7 +223,7 @@ public class GitProtocolMenu {
 					try {
 						terminal.printf("\n Push File to Repository \n");
 						String repo_namePush = textIO.newStringInputReader().read("Repository Name:");
-						
+
 						String result = peer.push(repo_namePush);
 						terminal.printf("\n -> "+result +"\n");
 					} catch (Exception e) {
@@ -238,7 +238,7 @@ public class GitProtocolMenu {
 
 						String result = peer.pull(repositoryName);
 						terminal.printf("\n -> "+result +"\n");
-						
+
 					} catch (Exception e) {
 						e.getStackTrace();
 						terminal.printf("\n -> Error Commit File in Repository  \n");
@@ -248,38 +248,38 @@ public class GitProtocolMenu {
 					try {
 						terminal.printf("\nLocal History\n");
 						repositoryName = textIO.newStringInputReader().read("Repository Name:");
-					
+
 						List<Commit> commitLocal = peer.showLocalHistory(repositoryName);
-					
+
 						if(commitLocal == null) {
 							terminal.printf("\n -> Not Possibile View Local History Repository %s not Exists \n",repositoryName);
 						}
 						if(commitLocal.isEmpty()) {
 							terminal.printf("\n -> No Commit Present in Local Repository %s  \n",repositoryName);
 						}
-					
+
 						for(int i = commitLocal.size()-1; i>=0; i--) {
 							terminal.printf("\n -> "+commitLocal.get(i).toString());
 						}
 					} catch (Exception e) {
 						e.getStackTrace();
-					//	terminal.printf("\n -> Error Local History \n");
+						//	terminal.printf("\n -> Error Local History \n");
 					}
 					break;
 				case REMOTE_HISTORY:
 					try {
 						terminal.printf("\nRemote History\n");
 						repositoryName = textIO.newStringInputReader().read("Repository Name:");
-					
+
 						List<Commit> commitRemote = peer.showRemoteHistory(repositoryName);
-					
+
 						if(commitRemote == null) {
 							terminal.printf("\n -> Not Possibile View Remote History Repository %s not Exists \n",repositoryName);
 						}
 						if(commitRemote.isEmpty()) {
 							terminal.printf("\n -> No Commit Present in remote Repository %s  \n",repositoryName);
 						}
-						
+
 						for(int i = commitRemote.size()-1; i>=0; i--) {
 							terminal.printf("\n"+commitRemote.get(i).toString() + "\n");
 						}
@@ -306,8 +306,26 @@ public class GitProtocolMenu {
 					}
 
 					break;
+				case FILE_DIRECTORY:
+					terminal.printf("\nFile in Directory\n");
+					String directoryName = textIO.newStringInputReader().read("Directory Name:");
+
+					File dir = ManageFile.getDirectory(id, directoryName);
+					if(dir==null) {
+						terminal.printf("\n Directory Not Exists \n");
+						break;
+					}
+
+					List<File> listFileSystem = ManageFile.listFiles(dir);
+
+					for(File fl : listFileSystem) {
+						terminal.printf("\n"+fl);
+					}
+
+
+					break;
 				case MENU_EXIT:
-					
+
 					boolean exit = textIO.newBooleanInputReader().withDefaultValue(false).read("exit?");
 					if(exit) {
 						System.exit(0);
@@ -348,6 +366,7 @@ public class GitProtocolMenu {
 		terminal.printf("\n* #%s - SHOW LOCAL HISTORY                       *", LOCAL_HISTORY);
 		terminal.printf("\n* #%s - SHOW REMOTE HISTORY                    *", REMOTE_HISTORY);
 		terminal.printf("\n* #%s - SHOW FILE IN REPOSITORY                   *", FILE_REPOSITORY);
+		terminal.printf("\n* #%s - SHOW FILE IN DIRECTORY                   *", FILE_DIRECTORY);
 		terminal.printf("\n* ------------------------------------------------------------------ *");
 		terminal.printf("\n* #%s - EXIT                                                   *", MENU_EXIT);
 		terminal.printf("\n********************************************\n");
