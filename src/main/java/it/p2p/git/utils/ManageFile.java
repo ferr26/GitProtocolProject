@@ -26,6 +26,16 @@ public class ManageFile {
 			dir.mkdir();
 		return dir;
 	}
+		public static File getDirectory(int id, String nameDirectory) {
+		String nameDir = PREFIX + id + "/" + nameDirectory;
+		File dir = new File(nameDir);
+		
+		if(dir.isDirectory()) {
+			return dir;
+		}else {
+			return null;
+		}
+}
 	
 	public static List<String> generateFile(File fileDirectory, int nFile) throws IOException {
 		List <String> listFile = new ArrayList<>();
