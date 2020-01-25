@@ -101,7 +101,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 			if (localReposity.containsKey(repoNameUpperCase)) {
 				return false;
 			}
-	
+
 			FutureGet futureGet = _dht.get(Number160.createHash(repoNameUpperCase)).start();
 			futureGet.awaitUninterruptibly();
 			if(futureGet.isSuccess() && !futureGet.isEmpty()) {
@@ -292,7 +292,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 						listUp.add(commit);
 					}
 					if (listUp.isEmpty()) {
-						return "Alredy Updated ";
+						return "Alredy Updated";
 					}
 					
 					//ricavo tutti i commit locali che non sono in remoto
@@ -332,7 +332,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 						localRepo.getListCommit().add(commit);
 					}
 					
-					return "Pull Successfully ";
+					return "Pull Successfully";
 				} else {
 					return "Remote repository Not Exists";
 				}
@@ -357,10 +357,15 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return repository;
 	}
+	
+	/**
+	 * Show a file present in Remote Repository
+	 * @param _repo_name a String, the name of the repository.
+	 * @return true if file are present, null otherwise.
+	 */
 	public Map<String,File> showFileRepository(String _repo_name) {
 		Map<String,File> file = new HashMap<String, File>();;
 		String repoNameUpperCase = _repo_name.toUpperCase();
-
 		try {
 			
 			FutureGet futureGet = _dht.get(Number160.createHash(repoNameUpperCase)).start();
@@ -376,7 +381,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return file;
 	}
-
+	
 	
 	/**
 	 * Show if Repository on Network exists
@@ -413,6 +418,9 @@ public class GitProtocolImpl implements GitProtocolExtends {
 	public List<Commit> showRemoteHistory(String _repo_name){
 		try {		
 			String repoNameUpperCase = _repo_name.toUpperCase();
+			if(!existRepository(repoNameUpperCase)) {
+				return null;
+			}
 			List<Commit> commit = new ArrayList<Commit>();
 			FutureGet futureGet = _dht.get(Number160.createHash(repoNameUpperCase)).start().awaitUninterruptibly();
 			if(futureGet.isSuccess() && !futureGet.isEmpty()) {

@@ -31,7 +31,7 @@ import it.p2p.git.utils.ManageFile;
  */
 public class GitProtocolMenu {
 
-        @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
+    @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
 	private static String master;
 
 	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
