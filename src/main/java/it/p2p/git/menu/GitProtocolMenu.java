@@ -32,11 +32,11 @@ import it.p2p.git.utils.ManageFile;
  */
 public class GitProtocolMenu {
 
-  //  @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
-	private static String master="127.0.0.1";
+    @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
+	private static String master;
 
-//	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
-	private static int id=1; 
+	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
+	private static int id; 
 
 	private final static int MENU_GENERAFILE = 1; 
 	private final static int MENU_CREATEREPO = 2; 
