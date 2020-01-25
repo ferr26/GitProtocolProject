@@ -5,11 +5,13 @@ import java.io.Serializable;
 public class FileIndex implements Serializable {
 
 	private File file;
+	private String encodeBase64;
 	private Operation operation;
 	
-	public FileIndex(File file, Operation operation) {
+	public FileIndex(File file, String encodeBase64, Operation operation) {
 		this.file = file;
 		this.operation = operation;
+		this.encodeBase64 = encodeBase64;
 	}
 
 	public File getFile() {
@@ -18,6 +20,14 @@ public class FileIndex implements Serializable {
 
 	public void setFile(File file) {
 		this.file = file;
+	}
+	
+	public String getEncodeBase64() {
+		return encodeBase64;
+	}
+	
+	public void setEncodeBase64(String encodeBase64) {
+		this.encodeBase64 = encodeBase64;
 	}
 
 	public Operation getOperation() {
@@ -30,8 +40,7 @@ public class FileIndex implements Serializable {
 
 	public enum Operation {
 		ADD,
-		REMOVE,
-		EDIT
+		REMOVE
 	}
 	
 	@Override

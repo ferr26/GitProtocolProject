@@ -18,6 +18,7 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import it.p2p.git.entity.Commit;
+import it.p2p.git.entity.FileIndex;
 import it.p2p.git.entity.Repository;
 import it.p2p.git.impl.GitProtocolImpl;
 import it.p2p.git.utils.ManageData;
@@ -31,11 +32,11 @@ import it.p2p.git.utils.ManageFile;
  */
 public class GitProtocolMenu {
 
-    @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
-	private static String master;
+  //  @Option(name="-m", aliases="--masterip", usage="the master peer ip address", required=true)
+	private static String master="127.0.0.1";
 
-	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
-	private static int id; 
+//	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
+	private static int id=1; 
 
 	private final static int MENU_GENERAFILE = 1; 
 	private final static int MENU_CREATEREPO = 2; 
@@ -291,7 +292,7 @@ public class GitProtocolMenu {
 				case FILE_REPOSITORY:
 					terminal.printf("\nFile in Repository\n");
 					repositoryName = textIO.newStringInputReader().read("Repository Name:");
-					Map<String,File> files = peer.showFileRepository(repositoryName);
+					Map<String,FileIndex> files = peer.showFileRepository(repositoryName);
 					if(files == null) {
 						terminal.printf("\n Repository Not Exists \n");
 						break;

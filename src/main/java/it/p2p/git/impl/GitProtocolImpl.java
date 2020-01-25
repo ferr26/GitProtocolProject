@@ -109,11 +109,11 @@ public class GitProtocolImpl implements GitProtocolExtends {
 				remoteRepository.setDirectory(_directory);
 				localReposity.put(repoNameUpperCase, remoteRepository);
 
-				Map<String, File> files = remoteRepository.getFiles();
+				Map<String, FileIndex> files = remoteRepository.getFiles();
 				files.forEach((nomefile,file) -> {
-					File clone = new File(_directory+"/"+nomefile);
+					String fileclone = _directory+"/"+nomefile;
 					try {
-						ManageFile.cloneFiles(file, clone);
+						ManageFile.convertBase64ToFile(file.getEncodeBase64(), fileclone); 
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -163,12 +163,12 @@ public class GitProtocolImpl implements GitProtocolExtends {
 			String repoNameUpperCase = _repo_name.toUpperCase();
 			if(localReposity.containsKey(repoNameUpperCase)) {
 				Repository rep = localReposity.get(repoNameUpperCase);
-				Map<String,File> fileRepository = rep.getFiles();
+				Map<String,FileIndex> fileRepository = rep.getFiles();
 				Set<String> setFiles = new HashSet<>();
 				for (File file : files) {
 					if(!fileRepository.containsKey(file.getName())) {
-						rep.addFiles(file);
-						FileIndex fileIndex = new FileIndex(file, Operation.ADD);
+						FileIndex fileIndex = new FileIndex(file, ManageFile.convertFileToBase64(file), Operation.ADD);
+						rep.addFiles(fileIndex);
 						fileCommit.add(fileIndex);
 						addFile = true;
 					}
@@ -178,9 +178,9 @@ public class GitProtocolImpl implements GitProtocolExtends {
 				fileRemoved.removeAll(setFiles);
 				for (String filenameRemoved : fileRemoved) {
 					if(fileRepository.containsKey(filenameRemoved)) {
-						File fileDelete = fileRepository.get(filenameRemoved);
+						FileIndex fileDelete = fileRepository.get(filenameRemoved);
 						rep.removeFiles(filenameRemoved);
-						FileIndex fileIndex = new FileIndex(fileDelete, Operation.REMOVE);
+						FileIndex fileIndex = new FileIndex(fileDelete.getFile(), null, Operation.REMOVE);
 						fileCommit.add(fileIndex);
 						addFile = true;
 					}
@@ -312,10 +312,10 @@ public class GitProtocolImpl implements GitProtocolExtends {
 						Commit commit = listUp.get(i);
 						for (FileIndex file: commit.getListaFile()) {
 							if (Operation.ADD.equals(file.getOperation())) {
-								localRepo.addFiles(file.getFile());
-								File clone = new File(localRepo.getDirectory()+"/"+file.getFile().getName());
+								localRepo.addFiles(file);
+								String fileclone = localRepo.getDirectory()+"/"+file.getFile().getName();
 								try {
-									ManageFile.cloneFiles(file.getFile(), clone);
+									ManageFile.convertBase64ToFile(file.getEncodeBase64(), fileclone); 
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
@@ -363,8 +363,8 @@ public class GitProtocolImpl implements GitProtocolExtends {
 	 * @param _repo_name a String, the name of the repository.
 	 * @return true if file are present, null otherwise.
 	 */
-	public Map<String,File> showFileRepository(String _repo_name) {
-		Map<String,File> file = new HashMap<String, File>();;
+	public Map<String,FileIndex> showFileRepository(String _repo_name) {
+		Map<String,FileIndex> file = new HashMap<String, FileIndex>();;
 		String repoNameUpperCase = _repo_name.toUpperCase();
 		try {
 			

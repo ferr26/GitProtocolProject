@@ -17,7 +17,7 @@ public class Repository implements Serializable {
 	private String name;
 	private File directory;
 	private String lastAuthor;
-	private Map<String,File> files;
+	private Map<String,FileIndex> files;
 	private LocalDateTime lastModification;
 	private List<Commit> listCommit;
 	
@@ -26,16 +26,16 @@ public class Repository implements Serializable {
 		this.directory = directory;
 		this.lastAuthor = author;
 		this.lastModification = LocalDateTime.now();
-		this.files = new HashMap<String, File>();
+		this.files = new HashMap<String, FileIndex>();
 		this.listCommit = new ArrayList<>();
 	}
 	
-	public Map<String, File> getFiles() {
+	public Map<String, FileIndex> getFiles() {
 		return files;
 	}
 
-	public void addFiles(File file) {
-		files.put(file.getName(), file);
+	public void addFiles(FileIndex file) {
+		files.put(file.getFile().getName(), file);
 	}
 	
 	public void removeFiles(String filename) {
