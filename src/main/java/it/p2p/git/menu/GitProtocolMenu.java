@@ -358,17 +358,17 @@ public class GitProtocolMenu {
 		terminal.printf("\n #  %s - CLONE  REPOSITORY", MENU_CLONEREPO);
 		terminal.printf("\n #  %s - DELETE REPOSITORY", MENU_DELETEREPO);
 		terminal.printf("\n #  %s - SHOW LOCAL REPOSITORY", MENU_SHOWLOCAL);
-		terminal.printf("\n ------------------------------------- *");
+		terminal.printf("\n ------------------------------------- ");
 		terminal.printf("\n #  %s - ADD FILE ", MENU_ADD_FILE);
 		terminal.printf("\n #  %s - COMMIT", MENU_COMMIT);
 		terminal.printf("\n #  %s - PUSH ", MENU_PUSH);
 		terminal.printf("\n #  %s - PULL ", MENU_PULL);
-		terminal.printf("\n #%s - SHOW LOCAL HISTORY", LOCAL_HISTORY);
-		terminal.printf("\n #%s - SHOW REMOTE HISTORY  ", REMOTE_HISTORY);
-		terminal.printf("\n #%s - SHOW FILE IN REPOSITORY   ", FILE_REPOSITORY);
-		terminal.printf("\n #%s - SHOW FILE IN DIRECTORY", FILE_DIRECTORY);
-		terminal.printf("\n ------------------------------------- *");
-		terminal.printf("\n #%s - EXIT                                                   *", MENU_EXIT);
+		terminal.printf("\n # %s - SHOW LOCAL HISTORY", LOCAL_HISTORY);
+		terminal.printf("\n # %s - SHOW REMOTE HISTORY  ", REMOTE_HISTORY);
+		terminal.printf("\n # %s - SHOW FILE IN REPOSITORY   ", FILE_REPOSITORY);
+		terminal.printf("\n # %s - SHOW FILE IN DIRECTORY", FILE_DIRECTORY);
+		terminal.printf("\n ------------------------------------- ");
+		terminal.printf("\n # %s - EXIT ", MENU_EXIT);
 		terminal.printf("\n********************************************\n");
 
 
