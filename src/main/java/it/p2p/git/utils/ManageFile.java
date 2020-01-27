@@ -16,7 +16,7 @@ import org.apache.commons.io.FileUtils;
 
 public class ManageFile {
 	
-	private static String PREFIX;
+	private static String PREFIX="";
 	
 	private static boolean PREFIXLOCAL= false;
 
