@@ -48,11 +48,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 			throw new Exception("Error in master peer bootstrap.");
 		}
 	}
-	/**
-	 * Config Author of Repository
-	 * @param author a String, the name of the Author.
-	 * @return true if it is correctly configured, false otherwise.
-	 */
+
 	public boolean configAuthor(String author) {
 		if (author==null || author.isEmpty()) {
 			return false;
@@ -60,12 +56,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		this.author=author;
 		return true;
 	}
-	/**
-	 * Creates new repository in a directory
-	 * @param _repo_name a String, the name of the repository.
-	 * @param _directory a File, the directory where create the repository.
-	 * @return true if it is correctly created, false otherwise.
-	 */
+
 	public boolean createRepository(String _repo_name, File _directory) {
 		try {
 			String repoNameUpperCase = _repo_name.toUpperCase();
@@ -89,12 +80,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 			return false;
 		}
 	}
-	/**
-	 * Clone a repository in a directory on Network if exist
-	 * @param _repo_name a String, the name of the repository.
-	 * @param _directory a File, the directory where create the repository.
-	 * @return true if it is correctly cloned, false otherwise.
-	 */
+
 	public boolean cloneRepository(String _repo_name, File _directory) {
 		try {
 			String repoNameUpperCase = _repo_name.toUpperCase();
@@ -126,11 +112,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 			return false;
 		}
 	}
-	/**
-	 * Delete a repository on Network and repository local
-	 * @param _repo_name a String, the name of the repository.
-	 * @return true if it is correctly deleted, false otherwise.
-	 */
+
 	public boolean deleteRepository(String _repo_name) {
 		try {
 			String repoNameUpperCase = _repo_name.toUpperCase();
@@ -151,12 +133,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 
 		}
 	}
-	/**
-	 * Adds a list of File to the given local repository. 
-	 * @param _repo_name a String, the name of the repository.
-	 * @param files a list of Files to be added to the repository.
-	 * @return true if it is correctly added, false otherwise.
-	 */
+
 	public boolean addFilesToRepository(String _repo_name, java.util.List<File> files) {
 		boolean addFile = false;
 		try {
@@ -191,11 +168,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return addFile;
 	}
-	/**
-	 * Get a file in a Repository Local.
-	 * @param _repo_name _repo_name a String, the name of the repository.
-	 * @return a File if Repository exist, null otherwise.
-	 */
+
 	public File getRepositoryDirectory(String _repo_name) {
 		String repoNameUpperCase = _repo_name.toUpperCase();
 		if(localReposity.containsKey(repoNameUpperCase)) {
@@ -205,12 +178,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return null;
 	}
-	/**
-	 * Apply the changing to the files in  the local repository.
-	 * @param _repo_name a String, the name of the repository.
-	 * @param _message a String, the message for this commit.
-	 * @return true if it is correctly committed, false otherwise.
-	 */
+
 	public boolean commit(String _repo_name, String _message) {
 		Commit commit = new Commit(author, _message, fileCommit);
 		fileCommit = new ArrayList<>();
@@ -227,12 +195,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		return false;	
 	}
 	
-	/**
-	 * Push all commits on the Network. If the status of the remote repository is changed, 
-	 * the push fails, asking for a pull.
-	 * @param _repo_name _repo_name a String, the name of the repository.
-	 * @return a String, operation message.
-	 */
+
 	public String push(String _repo_name) {
 		try {
 			String repoNameUpperCase = _repo_name.toUpperCase();
@@ -266,12 +229,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return "Error Push";
 	}
-	/**
-	 * Pull the files from the Network. If there is a conflict, the system duplicates 
-	 * the files and the user should manually fix the conflict.
-	 * @param _repo_name _repo_name a String, the name of the repository.
-	 * @return a String, operation message.
-	 */
+
 	public String pull(String _repo_name) {
 		try {
 			String repoNameUpperCase = _repo_name.toUpperCase();
@@ -282,7 +240,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 				if (futureGet.isSuccess() && !futureGet.isEmpty()) {
 					Repository remoteRepository =  (Repository) futureGet.dataMap().values().iterator().next().object();	
 					
-					//prelevo lista di commit che sono in remoto ma non in locale
+					//all remote  commits that aren't local  
 					List<Commit> listUp= new ArrayList<>();
 					for (int i = remoteRepository.getListCommit().size() -1;i>=0;i--) {
 						Commit commit = remoteRepository.getListCommit().get(i);
@@ -295,7 +253,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 						return "Alredy Updated";
 					}
 					
-					//ricavo tutti i commit locali che non sono in remoto
+					//all local commits that aren't remote
 					List<Commit> listUpLocal= new ArrayList<>();
 					for (int i = localRepo.getListCommit().size() -1;i>=0;i--) {
 						Commit commit = localRepo.getListCommit().get(i);
@@ -342,12 +300,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return "Error Pull";
 	}
-	/**
-	 * Clone a repository in a directory on Network if exist
-	 * @param _repo_name a String, the name of the repository.
-	 * @param _directory a File, the directory where create the repository.
-	 * @return true if it is correctly cloned, false otherwise.
-	 */
+
 	public List<Repository> showLocalRepository() {
 		List<Repository> repository = new ArrayList<>();
 		for (String repositoryLocal: localReposity.keySet()){
@@ -358,11 +311,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		return repository;
 	}
 	
-	/**
-	 * Show a file present in Remote Repository
-	 * @param _repo_name a String, the name of the repository.
-	 * @return true if file are present, null otherwise.
-	 */
+
 	public Map<String,FileIndex> showFileRepository(String _repo_name) {
 		Map<String,FileIndex> file = new HashMap<String, FileIndex>();;
 		String repoNameUpperCase = _repo_name.toUpperCase();
@@ -383,11 +332,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 	}
 	
 	
-	/**
-	 * Show if Repository on Network exists
-	 * @param _repo_name a String, the name of the repository.
-	 * @return true if repository exists, false otherwise.
-	 */
+
 	public boolean existRepository(String _repo_name) {
 		String repoNameUpperCase = _repo_name.toUpperCase();
 		FutureGet futureGet = _dht.get(Number160.createHash(repoNameUpperCase)).start();
@@ -397,11 +342,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}
 		return false;
 	}
-	/**
-	 * Show a local Commit without Push on the Network
-	 * @param _repo_name a String, the name of the repository.
-	 * @return List<Commit> if made a Commit, null otherwise.
-	 */
+	
 	public List<Commit> showLocalHistory(String _repo_name){
 		String repoNameUpperCase = _repo_name.toUpperCase();
 		Repository repo = localReposity.get(repoNameUpperCase);
@@ -410,11 +351,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 		}	
 		return null;
 	}
-	/**
-	 * Show a Commit Pushed on the Network
-	 * @param _repo_name a String, the name of the repository.
-	 * @return List<Commit> if made a Commit on Network, null otherwise.
-	 */
+
 	public List<Commit> showRemoteHistory(String _repo_name){
 		try {		
 			String repoNameUpperCase = _repo_name.toUpperCase();

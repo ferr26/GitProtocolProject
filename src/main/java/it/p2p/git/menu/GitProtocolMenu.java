@@ -263,7 +263,6 @@ public class GitProtocolMenu {
 						}
 					} catch (Exception e) {
 						e.getStackTrace();
-						//	terminal.printf("\n -> Error Local History \n");
 					}
 					break;
 				case REMOTE_HISTORY:
@@ -285,7 +284,6 @@ public class GitProtocolMenu {
 						}
 					} catch (Exception e) {
 						e.getStackTrace();
-						//terminal.printf("\n -> Error Remote History \n");
 					}
 					break;
 				case FILE_REPOSITORY:
