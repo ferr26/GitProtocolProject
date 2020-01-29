@@ -1,4 +1,4 @@
-package jar;
+package it.p2p.test;
 
 import static org.junit.Assert.*;
 
