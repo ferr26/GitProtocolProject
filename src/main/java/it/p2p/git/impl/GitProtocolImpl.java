@@ -182,9 +182,7 @@ public class GitProtocolImpl implements GitProtocolExtends {
 	public boolean commit(String _repo_name, String _message) {
 		Commit commit = new Commit(author, _message, fileCommit);
 		fileCommit = new ArrayList<>();
-		if(fileCommit.isEmpty()) {
-			return false;
-		}
+	
 		String repoNameUpperCase = _repo_name.toUpperCase();
 		if(!existRepository(repoNameUpperCase)) {
 			return false;
