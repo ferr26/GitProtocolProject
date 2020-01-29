@@ -37,7 +37,7 @@ In addition to the basic operations defined by the project, I have been develope
 **In the it.p2p.git.entity package there are:**
  - Commit, which represents the class of changes to the file in the local repository
  - Repository, the object that represents the Repository
- - FileIndex
+ - FileIndex, to index the file
 
 **In the it.p2p.git.impl package there is:**
 
@@ -50,9 +50,10 @@ In addition to the basic operations defined by the project, I have been develope
 **In the it.p2p.git.ultil package there are:**
 
  - ManageData, represents the class used to manipulate the Date and Time.
- - ManageFile, represents the class used to manage files.
+ - ManageFile, represents the class used to manage files (to try locally just set the boolean PREFIXLOCAL variable equal to true).
  
 **The test folder containing the GitProtocolUnitTest class, in which the Test Cases have been implemented.**
+
 
 ##  Build your app in a Docker container
 
@@ -67,7 +68,7 @@ Second step is to start the Master Peer in interactive mode (-i) and with two (-
 So after starting the Master, it is necessary to obtain the IP address of the Container through the commands:
 
  - Check the docker : `docker ps`
- - Check the IP address:`docker inspect <container ID>`
+ - Check the IP address:  `docker inspect <container ID>`
  
 Now after this short procedure it is possible to start the other peers by changing the ID
  - docker run -i --name PEER-1 -e MASTERIP="172.17.0.2" -e ID=1 gitprotocolproject`
